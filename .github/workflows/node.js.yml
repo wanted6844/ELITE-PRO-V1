@@ -1,0 +1,31 @@
+{"noiseKey":{"private":{"type":"Buffer","data":"QOzic6MTE3bBQFH5zQznxD3ZanFVeDHm0D+EKT6VilI="},"public":{"type":"Buffer","data":"hX5HwSzTP1aOLkeFzx7xXwIfdlFseQmaThAdECPSNls="}},"pairingEphemeralKeyPair":{"private":{"type":"Buffer","data":"YDZwE+ZB5dZRbVF+slGu6Nz+Y6IiCpyf2M/sCPTRAWM="},"public":{"type":"Buffer","data":"2mRlae2fD5UbuaPesOrlsniX3KUsbRWXx7a0uNFnUQc="}},"signedIdentityKey":{"private":{"type":"Buffer","data":"uNN+kUPdXUqaf2uv+O0K9vJwfBO6ELkf5Y1KHvbDllk="},"public":{"type":"Buffer","data":"wxNnDdaSOD6rdE3meGdietr2I7v8HgvQY9zLEtO8bRU="}},"signedPreKey":{"keyPair":{"private":{"type":"Buffer","data":"8M7yyHr7d5Vhi5ktI99GNW25h5Zk3fLJBwZhAiDe80I="},"public":{"type":"Buffer","data":"Y1iW8amsLD42r7obG9nSJLBzoD5NgOghyjQwUk2WuRQ="}},"signature":{"type":"Buffer","data":"9lBfJn25Tb9eFS4oAW+hxQpPDGo1XqzUxsw/eVTFc23zz8JPrrS6IBw1FG/WTMnn4IXt8mPrVx1pz466VConiw=="},"keyId":1},"registrationId":162,"advSecretKey":"J8As6fBglBMYwBceCx/kvEszWjop5Nf2P4KvZHXxcqI=","processedHistoryMessages":[],"nextPreKeyId":31,"firstUnuploadedPreKeyId":31,"accountSyncCounter":0,"accountSettings":{"unarchiveChats":false},"registered":true,"pairingCode":"FSWMG25V","me":{"id":"254783149675:3@s.whatsapp.net","lid":"119001262886952:3@lid"},"account":{"details":"CNS9hbMFELeg+MMGGAMgACgA","accountSignatureKey":"6AfZ7MEgfh3WluVoX6uc8O6MrQYWD3yLvI9+kxLiUD4=","accountSignature":"6Swbl99uq/gHjcNSC+GblP0j+bH1fF0IcWZoFxpqo6ANKOF3LBEE7JwoSVwdsPpkGOSObljHX3W5ngpENcm2BQ==","deviceSignature":"PgCR22bMGhWB4owjTvWz3wMeVxOgeh/T4Ols4cEJEOGACrGw7GjU/mfTJEQUvbWVx9KgX/nScjSuMoIsvrKjhw=="},"signalIdentities":[{"identifier":{"name":"254783149675:3@s.whatsapp.net","deviceId":0},"identifierKey":{"type":"Buffer","data":"BegH2ezBIH4d1pblaF+rnPDujK0GFg98i7yPfpMS4lA+"}}],"platform":"android","routingInfo":{"type":"Buffer","data":"CAgIDQ=="},"lastAccountSyncTimestamp":1753092155,"lastPropHash":"1K4hH4"}# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
